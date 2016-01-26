@@ -1,0 +1,1 @@
+# svg2react-loader
