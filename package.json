@@ -1,0 +1,26 @@
+{
+  "name": "svg2react-loader",
+  "version": "1.0.0",
+  "description": "convert svg to react component for webpack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/yanbingbing/svg2react-loader.git"
+  },
+  "keywords": [
+    "webpack",
+    "svg",
+    "react",
+    "loader",
+    "webpack-loader"
+  ],
+  "author": "onbing",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yanbingbing/svg2react-loader/issues"
+  },
+  "homepage": "https://github.com/yanbingbing/svg2react-loader#readme"
+}
