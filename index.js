@@ -46,7 +46,7 @@ function renderJsx(opts, xml, callback) {
  */
 module.exports = function (source) {
     // read our template
-    var tmplPath = path.resolve('./util/svg.tpl');
+    var tmplPath = path.join(__dirname, '/util/svg.tpl');
 
     // let webpack know about us, and get our callback
     var callback = this.async();
