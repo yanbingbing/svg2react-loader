@@ -1,4 +1,4 @@
-# SVG to React Loader
+# SVG to React Loader [![](http://img.shields.io/npm/v/svg2react-loader.svg)](https://npmjs.org/package/svg2react-loader)
 
 > A Webpack Loader to turn SVGs into React Components
 
