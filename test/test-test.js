@@ -46,10 +46,10 @@ describe('something', function () {
                 console.log(babel.transform(result, {
                     presets: ['es2015', 'react']
                 }).code);
+
                 done();
             },
-            resourcePath: filename,
-            resourceQuery: '?attrs={foo: \'bar\'}'
+            resourcePath: filename
         });
     });
 

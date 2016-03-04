@@ -5,13 +5,15 @@ var xml2js   = require('xml2js');
 var template = require('lodash/string/template');
 var camelCase = require('lodash/string/camelCase');
 var sanitize = require('./util/sanitize');
+var Tmpl;
 
 function readTemplate (callback, filepath) {
     fs.readFile(filepath, 'utf8', function (error, contents) {
         if (error) {
             throw error;
         }
-        callback(template(contents));
+        Tmpl = template(contents);
+        callback();
     });
 }
 
@@ -22,18 +24,18 @@ function getName(filepath) {
     return basename[0].toUpperCase() + camelCase(basename.slice(1));
 }
 
-function renderJsx(opts, xml, callback) {
+function renderJsx(displayName, xml, callback) {
     var tagName = Object.keys(xml)[0];
     var root = xml[tagName];
 
-    var props = Object.assign(sanitize(root).$ || {}, opts.attrs);
+    var props = Object.assign(sanitize(root).$ || {});
 
     delete props.id;
 
     var xmlBuilder = new xml2js.Builder({headless: true});
     var xmlSrc = xmlBuilder.buildObject(xml);
-    var component = opts.tmpl({
-        displayName: opts.displayName,
+    var component = Tmpl({
+        displayName: displayName,
         defaultProps: props,
         innerXml: xmlSrc.split(/\n/).slice(1, -1).join('\n')
     });
@@ -58,33 +60,21 @@ module.exports = function (source) {
     var rsrcPath = this.resourcePath;
     var rsrcQuery = lutils.parseQuery(this.resourceQuery);
 
-    // resource parameters override loader parameters
-    var params = Object.assign({}, query, rsrcQuery);
+    var displayName = rsrcQuery.name || query.name || getName(rsrcPath);
 
-    var displayName = params.name || getName(rsrcPath);
-    var attrs = {};
-
-    if (params.attrs) {
-        // easier than having to write json in the query
-        // if anyone wants to exploit it, it's their build process
-        try {
-            Object.assign(attrs, (new Function('return ' + params.attrs))());
-        } catch (e) {}
-    }
-
-    var opts = {
-        attrs: attrs,
-        displayName: displayName
-    };
-
-    readTemplate(function (tmpl) {
-        opts.tmpl = tmpl;
+    var render = function () {
         var xmlParser = new xml2js.Parser();
         xmlParser.parseString(source, function (error, xml) {
             if (error) {
                 return callback(error);
             }
-            renderJsx(opts, xml, callback);
+            renderJsx(displayName, xml, callback);
         });
-    }, tmplPath);
+    };
+
+    if (Tmpl) {
+        render();
+    } else {
+        readTemplate(render, tmplPath);
+    }
 };
