@@ -4,6 +4,8 @@ var lutils   = require('loader-utils');
 var xml2js   = require('xml2js');
 var template = require('lodash/string/template');
 var camelCase = require('lodash/string/camelCase');
+var assign = require('lodash/object/assign');
+var keys = require('lodash/object/keys');
 var sanitize = require('./util/sanitize');
 var Tmpl;
 
@@ -25,10 +27,10 @@ function getName(filepath) {
 }
 
 function renderJsx(displayName, xml, callback) {
-    var tagName = Object.keys(xml)[0];
+    var tagName = keys(xml)[0];
     var root = xml[tagName];
 
-    var props = Object.assign(sanitize(root).$ || {});
+    var props = assign(sanitize(root).$ || {});
 
     delete props.id;
 
