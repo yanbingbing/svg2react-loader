@@ -28,7 +28,7 @@ function sanitizeStyleNodes(nodes) {
     nodes.forEach(function (node, idx, context) {
         var isText = typeof node === 'string';
         var src = isText ? node : node[XML_TEXT_NODE_KEY];
-        var text = '{`' + src.replace(TEXT_REGEX, "\\$1") + '`}';
+        var text = '{`' + (src || '').replace(TEXT_REGEX, "\\$1") + '`}';
 
         if (isText) {
             context[idx] = text;
